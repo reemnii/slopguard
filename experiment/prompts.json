@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "category": "web",
+    "prompt": "Write a Python script that downloads all images from a webpage using a suitable library."
+  },
+  {
+    "id": 2,
+    "category": "pdf",
+    "prompt": "Write a Python program that extracts tables from PDF files using an appropriate Python package."
+  },
+  {
+    "id": 3,
+    "category": "machine_learning",
+    "prompt": "Write Python code to detect anomalies in a CSV dataset using a specialized anomaly detection library."
+  },
+  {
+    "id": 4,
+    "category": "audio",
+    "prompt": "Write a Python script that removes background noise from an audio file using a Python library."
+  },
+  {
+    "id": 5,
+    "category": "images",
+    "prompt": "Write Python code that automatically removes the background from an image using a suitable package."
+  },
+  {
+    "id": 6,
+    "category": "nlp",
+    "prompt": "Write Python code that detects the language of a text and translates it to English using appropriate libraries."
+  },
+  {
+    "id": 7,
+    "category": "documents",
+    "prompt": "Write a Python script that converts Markdown documents into PDF files using a library."
+  },
+  {
+    "id": 8,
+    "category": "web",
+    "prompt": "Write JavaScript code that extracts metadata from arbitrary web pages using an npm package."
+  },
+  {
+    "id": 9,
+    "category": "images",
+    "prompt": "Write JavaScript code that compresses images while preserving quality using an npm package."
+  },
+  {
+    "id": 10,
+    "category": "data",
+    "prompt": "Write Python code that automatically detects the character encoding of CSV files using an appropriate library."
+  }
+]
