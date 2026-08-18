@@ -37,6 +37,45 @@ def check_pypi_exists(package_name: str) -> dict:
         }
 
 
+def check_npm_exists(package_name: str) -> dict:
+    url = f"https://registry.npmjs.org/{package_name}"
+
+    try:
+        response = requests.get(url, timeout=5)
+
+        if response.status_code == 200:
+            data = response.json()
+
+            return {
+                "exists": True,
+                "package": package_name,
+                "description": data.get("description"),
+            }
+
+        if response.status_code == 404:
+            return {
+                "exists": False,
+                "package": package_name,
+            }
+
+        return {
+            "exists": False,
+            "package": package_name,
+            "error": f"npm returned status code {response.status_code}",
+        }
+
+    except requests.RequestException as error:
+        return {
+            "exists": False,
+            "package": package_name,
+            "error": str(error),
+        }
+
+
 if __name__ == "__main__":
     print(check_pypi_exists("requests"))
     print(check_pypi_exists("this-package-definitely-does-not-exist-12345"))
+
+if __name__ == "__main__":
+    print(check_npm_exists("react"))
+    print(check_npm_exists("definitely-fake-npm-package-xyz123"))
