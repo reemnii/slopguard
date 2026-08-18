@@ -1,5 +1,5 @@
-import os
 import requests
-import pandas
 import requestss
-import definitely_fake_ai_package_xyz
+import numpy
+import numpyy
+import somecompletelyfakepackagexyz
