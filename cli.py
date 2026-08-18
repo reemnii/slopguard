@@ -5,6 +5,9 @@ from scanner.scanner import scan_code
 
 
 def main():
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+
     if len(sys.argv) < 2:
         print("Usage: python cli.py <file>")
         return
@@ -17,13 +20,7 @@ def main():
 
     extension = file_path.suffix.lower()
 
-    supported_extensions = {
-        ".py",
-        ".js",
-        ".jsx",
-        ".ts",
-        ".tsx",
-    }
+    supported_extensions = {".py", ".js", ".jsx", ".ts", ".tsx"}
 
     if extension not in supported_extensions:
         print(f"Unsupported file type: {extension}")
@@ -50,38 +47,26 @@ def main():
         package = result["package"]
         registry = result["registry"]
 
-        if result["status"] == "LOOKS FINE":
-            print(f"✓ {package:<25} {registry:<6} LOOKS FINE")
+        print(
+            f"{package:<25} "
+            f"{registry:<6} "
+            f"Risk: {result['risk_score']:>3}/100 "
+            f"[{result['risk_level']}]"
+        )
 
-        elif result["status"] == "SUSPICIOUS":
-            print(
-                f"⚠ {package:<25} {registry:<6} SUSPICIOUS "
-                f"(similar to {result['similar_to']}, "
-                f"{result['similarity']:.1f}% match)"
-            )
-            suspicious_count += 1
+        for reason in result.get("risk_reasons", []):
+            print(f"   - {reason}")
 
-        elif result["status"] == "POSSIBLE SLOPSQUAT":
-            print(
-                f"🚨 {package:<25} {registry:<6} POSSIBLE SLOPSQUAT "
-                f"(similar to {result['similar_to']}, "
-                f"{result['similarity']:.1f}% match)"
-            )
-            suspicious_count += 1
-
-        elif result["status"] == "DOES NOT EXIST":
-            print(
-                f"✗ {package:<25} {registry:<6} DOES NOT EXIST"
-            )
+        if result["risk_level"] in {"HIGH", "MEDIUM"}:
             suspicious_count += 1
 
     print("-" * 60)
 
     if suspicious_count == 0:
-        print("No potentially suspicious packages detected.")
+        print("No high- or medium-risk packages detected.")
     else:
         print(
-            f"{suspicious_count} potentially suspicious package(s) detected."
+            f"{suspicious_count} high- or medium-risk package(s) detected."
         )
 
 

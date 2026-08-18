@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from rapidfuzz import fuzz
 
 
@@ -63,6 +65,82 @@ def find_similar_package(
         }
 
     return None
+
+
+def analyze_package_metadata(registry_result: dict) -> list[str]:
+    reasons = []
+
+    repository_url = registry_result.get("repository_url")
+
+    if not repository_url:
+        reasons.append("No repository URL")
+
+    first_upload = registry_result.get("first_upload")
+
+    if first_upload:
+        try:
+            created = datetime.fromisoformat(
+                first_upload.replace("Z", "+00:00")
+            )
+
+            now = datetime.now(timezone.utc)
+            age_days = (now - created).days
+
+            if age_days < 30:
+                reasons.append(
+                    f"Very new package ({age_days} days old)"
+                )
+
+        except ValueError:
+            pass
+
+    return reasons
+
+def calculate_risk_score(
+    exists: bool,
+    similarity_result: dict | None = None,
+    metadata_reasons: list[str] | None = None,
+) -> dict:
+    score = 0
+    reasons = []
+
+    if not exists:
+        score += 60
+        reasons.append("Package does not exist in registry")
+
+    if similarity_result:
+        score += 30
+        reasons.append(
+            f"Name similar to {similarity_result['similar_to']} "
+            f"({similarity_result['similarity']:.1f}% match)"
+        )
+
+    metadata_reasons = metadata_reasons or []
+
+    for reason in metadata_reasons:
+        if reason.startswith("Very new package"):
+            score += 20
+        elif reason == "No repository URL":
+            score += 10
+
+        reasons.append(reason)
+
+    score = min(score, 100)
+
+    if score >= 70:
+        level = "HIGH"
+    elif score >= 40:
+        level = "MEDIUM"
+    elif score >= 20:
+        level = "LOW"
+    else:
+        level = "MINIMAL"
+
+    return {
+        "risk_score": score,
+        "risk_level": level,
+        "risk_reasons": reasons,
+    }
 
 
 if __name__ == "__main__":

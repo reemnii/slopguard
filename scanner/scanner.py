@@ -3,8 +3,11 @@ import sys
 from scanner.extract_imports import extract_imports
 from scanner.extract_npm import extract_npm_packages
 from scanner.registry_check import check_pypi_exists, check_npm_exists
-from scanner.heuristics import find_similar_package
-
+from scanner.heuristics import (
+    find_similar_package,
+    analyze_package_metadata,
+    calculate_risk_score,
+)
 
 def scan_python_code(code: str) -> list[dict]:
     packages = extract_imports(code)
@@ -15,6 +18,13 @@ def scan_python_code(code: str) -> list[dict]:
             continue
 
         registry_result = check_pypi_exists(package)
+        metadata_reasons = []
+
+        if registry_result["exists"]:
+            metadata_reasons = analyze_package_metadata(
+                registry_result
+            )
+
         similarity_result = find_similar_package(
             package,
             registry="pypi",
@@ -27,18 +37,28 @@ def scan_python_code(code: str) -> list[dict]:
             "status": "LOOKS FINE",
         }
 
-        if not registry_result["exists"]:
-            result["status"] = "DOES NOT EXIST"
+        risk = calculate_risk_score(
+            exists=registry_result["exists"],
+            similarity_result=similarity_result,
+            metadata_reasons=metadata_reasons,
+        )
 
-            if similarity_result:
-                result["similar_to"] = similarity_result["similar_to"]
-                result["similarity"] = similarity_result["similarity"]
-                result["status"] = "POSSIBLE SLOPSQUAT"
+        result["risk_score"] = risk["risk_score"]
+        result["risk_level"] = risk["risk_level"]
+        result["risk_reasons"] = risk["risk_reasons"]
 
-        elif similarity_result:
+        if risk["risk_level"] == "HIGH":
+            result["status"] = "HIGH RISK"
+        elif risk["risk_level"] == "MEDIUM":
+            result["status"] = "SUSPICIOUS"
+        elif risk["risk_level"] == "LOW":
+            result["status"] = "LOW RISK"
+        else:
+            result["status"] = "LOOKS FINE"
+
+        if similarity_result:
             result["similar_to"] = similarity_result["similar_to"]
             result["similarity"] = similarity_result["similarity"]
-            result["status"] = "SUSPICIOUS"
 
         results.append(result)
 
@@ -55,26 +75,36 @@ def scan_javascript_code(code: str) -> list[dict]:
             package,
             registry="npm",
         )
+        metadata_reasons = []
 
         result = {
             "package": package,
             "registry": "npm",
             "exists": registry_result["exists"],
-            "status": "LOOKS FINE",
         }
 
-        if not registry_result["exists"]:
-            result["status"] = "DOES NOT EXIST"
+        risk = calculate_risk_score(
+            exists=registry_result["exists"],
+            similarity_result=similarity_result,
+            metadata_reasons=metadata_reasons,
+        )
 
-            if similarity_result:
-                result["similar_to"] = similarity_result["similar_to"]
-                result["similarity"] = similarity_result["similarity"]
-                result["status"] = "POSSIBLE SLOPSQUAT"
+        result["risk_score"] = risk["risk_score"]
+        result["risk_level"] = risk["risk_level"]
+        result["risk_reasons"] = risk["risk_reasons"]
 
-        elif similarity_result:
+        if risk["risk_level"] == "HIGH":
+            result["status"] = "HIGH RISK"
+        elif risk["risk_level"] == "MEDIUM":
+            result["status"] = "SUSPICIOUS"
+        elif risk["risk_level"] == "LOW":
+            result["status"] = "LOW RISK"
+        else:
+            result["status"] = "LOOKS FINE"
+
+        if similarity_result:
             result["similar_to"] = similarity_result["similar_to"]
             result["similarity"] = similarity_result["similarity"]
-            result["status"] = "SUSPICIOUS"
 
         results.append(result)
 

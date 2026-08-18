@@ -9,12 +9,34 @@ def check_pypi_exists(package_name: str) -> dict:
 
         if response.status_code == 200:
             data = response.json()
+            info = data.get("info", {})
+            releases = data.get("releases", {})
+
+            repository_url = (
+                info.get("project_url")
+                or info.get("home_page")
+                or info.get("project_urls", {}).get("Source")
+                or info.get("project_urls", {}).get("Repository")
+            )
+
+            upload_dates = []
+
+            for files in releases.values():
+                for file in files:
+                    upload_time = file.get("upload_time_iso_8601")
+
+                    if upload_time:
+                        upload_dates.append(upload_time)
+
+            first_upload = min(upload_dates) if upload_dates else None
 
             return {
                 "exists": True,
                 "package": package_name,
-                "author": data["info"].get("author"),
-                "summary": data["info"].get("summary"),
+                "summary": info.get("summary"),
+                "author": info.get("author"),
+                "repository_url": repository_url,
+                "first_upload": first_upload,
             }
 
         if response.status_code == 404:
