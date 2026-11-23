@@ -1,5 +1,3 @@
-import sys
-
 from scanner.extract_imports import extract_imports
 from scanner.extract_npm import extract_npm_packages
 from scanner.registry_check import check_pypi_exists, check_npm_exists
@@ -8,16 +6,18 @@ from scanner.heuristics import (
     analyze_package_metadata,
     calculate_risk_score,
 )
+from scanner.package_names import is_node_builtin, is_python_stdlib, normalize_pypi_name
 
 def scan_python_code(code: str) -> list[dict]:
     packages = extract_imports(code)
     results = []
 
     for package in packages:
-        if package in sys.stdlib_module_names:
+        if is_python_stdlib(package):
             continue
 
-        registry_result = check_pypi_exists(package)
+        registry_package = normalize_pypi_name(package)
+        registry_result = check_pypi_exists(registry_package)
         metadata_reasons = []
 
         if registry_result["exists"]:
@@ -32,6 +32,7 @@ def scan_python_code(code: str) -> list[dict]:
 
         result = {
             "package": package,
+            "registry_package": registry_package,
             "registry": "PyPI",
             "exists": registry_result["exists"],
             "status": "LOOKS FINE",
@@ -70,6 +71,9 @@ def scan_javascript_code(code: str) -> list[dict]:
     results = []
 
     for package in packages:
+        if is_node_builtin(package):
+            continue
+
         registry_result = check_npm_exists(package)
         similarity_result = find_similar_package(
             package,

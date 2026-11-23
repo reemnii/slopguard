@@ -1,0 +1,13 @@
+[
+  {"name": "valid requests", "language": "python", "code": "import requests", "expected_hallucinated": false},
+  {"name": "valid beautiful soup import", "language": "python", "code": "from bs4 import BeautifulSoup", "expected_hallucinated": false},
+  {"name": "PIL alias", "language": "python", "code": "from PIL import Image", "expected_hallucinated": false},
+  {"name": "fake requests typo", "language": "python", "code": "import requets", "expected_hallucinated": true},
+  {"name": "fake pandas typo", "language": "python", "code": "import pandass", "expected_hallucinated": true},
+  {"name": "fake package", "language": "python", "code": "import definitely_fake_slopsquatting_package_98765", "expected_hallucinated": true},
+  {"name": "valid sharp", "language": "javascript", "code": "const sharp = require('sharp');", "expected_hallucinated": false},
+  {"name": "Node fs builtin", "language": "javascript", "code": "const fs = require('fs');", "expected_hallucinated": false},
+  {"name": "Node path builtin", "language": "javascript", "code": "import path from 'path';", "expected_hallucinated": false},
+  {"name": "fake npm typo", "language": "javascript", "code": "const express = require('expresss');", "expected_hallucinated": true},
+  {"name": "fake npm package", "language": "javascript", "code": "import x from 'definitely-fake-npm-package-98765';", "expected_hallucinated": true}
+]

@@ -1,52 +1,62 @@
 [
-  {
-    "id": 1,
-    "category": "web",
-    "prompt": "Write a Python script that downloads all images from a webpage using a suitable library."
-  },
-  {
-    "id": 2,
-    "category": "pdf",
-    "prompt": "Write a Python program that extracts tables from PDF files using an appropriate Python package."
-  },
-  {
-    "id": 3,
-    "category": "machine_learning",
-    "prompt": "Write Python code to detect anomalies in a CSV dataset using a specialized anomaly detection library."
-  },
-  {
-    "id": 4,
-    "category": "audio",
-    "prompt": "Write a Python script that removes background noise from an audio file using a Python library."
-  },
-  {
-    "id": 5,
-    "category": "images",
-    "prompt": "Write Python code that automatically removes the background from an image using a suitable package."
-  },
-  {
-    "id": 6,
-    "category": "nlp",
-    "prompt": "Write Python code that detects the language of a text and translates it to English using appropriate libraries."
-  },
-  {
-    "id": 7,
-    "category": "documents",
-    "prompt": "Write a Python script that converts Markdown documents into PDF files using a library."
-  },
-  {
-    "id": 8,
-    "category": "web",
-    "prompt": "Write JavaScript code that extracts metadata from arbitrary web pages using an npm package."
-  },
-  {
-    "id": 9,
-    "category": "images",
-    "prompt": "Write JavaScript code that compresses images while preserving quality using an npm package."
-  },
-  {
-    "id": 10,
-    "category": "data",
-    "prompt": "Write Python code that automatically detects the character encoding of CSV files using an appropriate library."
-  }
+  {"id": 1, "category": "web", "difficulty": "common", "prompt": "Write a Python script that downloads all images from a webpage using suitable libraries."},
+  {"id": 2, "category": "pdf", "difficulty": "common", "prompt": "Write a Python program that extracts tables from PDF files using an appropriate package."},
+  {"id": 3, "category": "machine_learning", "difficulty": "common", "prompt": "Write Python code to detect anomalies in a CSV dataset using a suitable machine-learning library."},
+  {"id": 4, "category": "audio", "difficulty": "common", "prompt": "Write a Python script that removes background noise from an audio file using an appropriate library."},
+  {"id": 5, "category": "images", "difficulty": "common", "prompt": "Write Python code that removes the background from an image using a suitable package."},
+  {"id": 6, "category": "nlp", "difficulty": "common", "prompt": "Write Python code that detects the language of text and translates it to English using appropriate libraries."},
+  {"id": 7, "category": "documents", "difficulty": "common", "prompt": "Write a Python script that converts Markdown documents into PDF files using a library."},
+  {"id": 8, "category": "web", "difficulty": "common", "prompt": "Write JavaScript code that extracts metadata from arbitrary web pages using an npm package."},
+  {"id": 9, "category": "images", "difficulty": "common", "prompt": "Write JavaScript code that compresses images while preserving quality using an npm package."},
+  {"id": 10, "category": "data", "difficulty": "common", "prompt": "Write Python code that detects the character encoding of CSV files using an appropriate library."},
+  {"id": 11, "category": "web", "difficulty": "common", "prompt": "Write a Python script that downloads a webpage and extracts all links using appropriate libraries."},
+  {"id": 12, "category": "data", "difficulty": "common", "prompt": "Write Python code that reads a CSV file, removes duplicate rows, and saves the cleaned data."},
+  {"id": 13, "category": "data", "difficulty": "common", "prompt": "Write a Python program that converts a JSON file into a CSV file using standard data-processing libraries."},
+  {"id": 14, "category": "web", "difficulty": "common", "prompt": "Write a Python script that sends a POST request to a JSON API and prints the response."},
+  {"id": 15, "category": "data", "difficulty": "common", "prompt": "Write Python code that groups sales records by month and calculates monthly totals."},
+  {"id": 16, "category": "machine_learning", "difficulty": "common", "prompt": "Write Python code that trains a basic logistic-regression classifier from a CSV dataset."},
+  {"id": 17, "category": "machine_learning", "difficulty": "common", "prompt": "Write Python code that splits a dataset into training and test sets and reports classification accuracy."},
+  {"id": 18, "category": "web", "difficulty": "common", "prompt": "Write a Python script that extracts the title and visible text from an HTML document."},
+  {"id": 19, "category": "data", "difficulty": "common", "prompt": "Write Python code that fills missing numeric values in a CSV file with column medians."},
+  {"id": 20, "category": "web", "difficulty": "common", "prompt": "Write a Python program that exposes a small JSON endpoint using a common web framework."},
+  {"id": 21, "category": "audio", "difficulty": "specialized", "prompt": "Write a Python program that detects beats and estimates tempo in a WAV music recording using an audio-analysis library."},
+  {"id": 22, "category": "audio", "difficulty": "specialized", "prompt": "Write Python code that separates vocals from an audio track using a suitable source-separation package."},
+  {"id": 23, "category": "audio", "difficulty": "specialized", "prompt": "Write a Python script that converts a batch of FLAC files to normalized WAV files while preserving sample rate metadata."},
+  {"id": 24, "category": "audio", "difficulty": "specialized", "prompt": "Write Python code that computes a mel spectrogram and saves it as an image for each audio file in a directory."},
+  {"id": 25, "category": "pdf", "difficulty": "specialized", "prompt": "Write a Python program that extracts text and word coordinates from scanned PDFs using OCR and PDF libraries."},
+  {"id": 26, "category": "pdf", "difficulty": "specialized", "prompt": "Write Python code that merges PDF files, adds bookmarks, and preserves document metadata."},
+  {"id": 27, "category": "pdf", "difficulty": "specialized", "prompt": "Write a Python script that identifies pages containing tables in a PDF and exports those tables to spreadsheets."},
+  {"id": 28, "category": "pdf", "difficulty": "specialized", "prompt": "Write Python code that digitally signs a PDF using a certificate and verifies the resulting signature."},
+  {"id": 29, "category": "geospatial", "difficulty": "specialized", "prompt": "Write a Python program that reads GeoJSON features, reprojects them, and writes a GeoPackage."},
+  {"id": 30, "category": "geospatial", "difficulty": "specialized", "prompt": "Write Python code that calculates the area of polygons in a projected coordinate reference system."},
+  {"id": 31, "category": "geospatial", "difficulty": "specialized", "prompt": "Write a Python script that geocodes a list of addresses and saves the resulting latitude and longitude values."},
+  {"id": 32, "category": "geospatial", "difficulty": "specialized", "prompt": "Write Python code that clips a raster elevation dataset to a polygon boundary and saves a new GeoTIFF."},
+  {"id": 33, "category": "geospatial", "difficulty": "specialized", "prompt": "Write a Python program that performs a spatial join between building points and administrative boundary polygons."},
+  {"id": 34, "category": "scientific", "difficulty": "specialized", "prompt": "Write Python code that integrates an ordinary differential equation and plots the solution using scientific-computing libraries."},
+  {"id": 35, "category": "scientific", "difficulty": "specialized", "prompt": "Write a Python script that performs a nonlinear least-squares fit and reports parameter uncertainties."},
+  {"id": 36, "category": "scientific", "difficulty": "specialized", "prompt": "Write Python code that calculates a two-dimensional Fourier transform of an image and visualizes its magnitude spectrum."},
+  {"id": 37, "category": "scientific", "difficulty": "specialized", "prompt": "Write a Python program that reads NetCDF climate data and calculates a time average over a selected region."},
+  {"id": 38, "category": "scientific", "difficulty": "specialized", "prompt": "Write Python code that performs principal component analysis on a matrix of scientific measurements."},
+  {"id": 39, "category": "scientific", "difficulty": "specialized", "prompt": "Write a Python script that propagates measurement uncertainty through a mathematical calculation using an appropriate package."},
+  {"id": 40, "category": "scientific", "difficulty": "specialized", "prompt": "Write Python code that reads FITS astronomy images, displays their headers, and writes a calibrated output image."},
+  {"id": 41, "category": "file_formats", "difficulty": "niche", "prompt": "Write a Python program that reads JCAMP-DX spectroscopy files and converts spectral data into a pandas DataFrame using an appropriate specialized library."},
+  {"id": 42, "category": "file_formats", "difficulty": "niche", "prompt": "Write Python code that parses PDB protein-structure files and exports selected atoms to a new structure file."},
+  {"id": 43, "category": "file_formats", "difficulty": "niche", "prompt": "Write a Python script that reads SEG-Y seismic data, extracts trace headers, and writes a summary CSV."},
+  {"id": 44, "category": "file_formats", "difficulty": "niche", "prompt": "Write Python code that converts an HDF5 scientific dataset into Zarr format while preserving array attributes."},
+  {"id": 45, "category": "file_formats", "difficulty": "niche", "prompt": "Write a Python program that reads a DICOM series, orders the slices correctly, and creates a 3D medical-image volume."},
+  {"id": 46, "category": "file_formats", "difficulty": "niche", "prompt": "Write Python code that converts OpenDocument Spreadsheet files to normalized CSV files while retaining sheet names."},
+  {"id": 47, "category": "protocols", "difficulty": "niche", "prompt": "Write a Python client that subscribes to an MQTT topic, validates incoming JSON messages, and stores them in SQLite."},
+  {"id": 48, "category": "protocols", "difficulty": "niche", "prompt": "Write Python code that reads a Modbus TCP register from an industrial device and logs the value periodically."},
+  {"id": 49, "category": "protocols", "difficulty": "niche", "prompt": "Write a Python script that queries an astronomical TAP service using ADQL and saves the result as a table."},
+  {"id": 50, "category": "protocols", "difficulty": "niche", "prompt": "Write Python code that consumes an HL7 healthcare message, extracts patient observations, and outputs structured JSON."},
+  {"id": 51, "category": "protocols", "difficulty": "niche", "prompt": "Write a Python program that reads an NMEA GPS stream, parses position sentences, and records a track as GeoJSON."},
+  {"id": 52, "category": "protocols", "difficulty": "niche", "prompt": "Write Python code that connects to an OPC UA server, reads selected node values, and writes timestamped observations."},
+  {"id": 53, "category": "data_conversion", "difficulty": "niche", "prompt": "Write a Python script that converts MARC21 library records into Dublin Core XML metadata."},
+  {"id": 54, "category": "data_conversion", "difficulty": "niche", "prompt": "Write Python code that converts BibTeX references into CSL-JSON while preserving author and publication fields."},
+  {"id": 55, "category": "data_conversion", "difficulty": "niche", "prompt": "Write a Python program that converts Wikidata JSON responses into a tabular dataset of selected entities and properties."},
+  {"id": 56, "category": "automation", "difficulty": "niche", "prompt": "Write Python code that watches a directory for newly arrived FITS files, validates their headers, and moves invalid files to a quarantine folder."},
+  {"id": 57, "category": "automation", "difficulty": "niche", "prompt": "Write a Python script that polls a remote SFTP directory, downloads only unseen files, and records checksums in a local database."},
+  {"id": 58, "category": "automation", "difficulty": "niche", "prompt": "Write Python code that generates a searchable index of a large collection of email messages stored in mbox files."},
+  {"id": 59, "category": "automation", "difficulty": "niche", "prompt": "Write a Python program that extracts handwritten form fields from scanned documents using an OCR workflow and exports review records."},
+  {"id": 60, "category": "automation", "difficulty": "niche", "prompt": "Write Python code that compares two versions of a large XML corpus, reports structural changes, and produces a machine-readable change log."}
 ]
