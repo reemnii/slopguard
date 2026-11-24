@@ -28,7 +28,7 @@ def main():
 
     try:
         code = file_path.read_text(encoding="utf-8")
-    except OSError as error:
+    except (OSError, UnicodeError) as error:
         print(f"Error reading file: {error}")
         return
 
@@ -42,15 +42,18 @@ def main():
     print("-" * 60)
 
     suspicious_count = 0
+    unknown_count = 0
 
     for result in results:
         package = result["package"]
         registry = result["registry"]
 
+        score = result['risk_score']
+        score_text = f"{score:>3}/100" if score is not None else "unverified"
         print(
             f"{package:<25} "
             f"{registry:<6} "
-            f"Risk: {result['risk_score']:>3}/100 "
+            f"Risk: {score_text} "
             f"[{result['risk_level']}]"
         )
 
@@ -59,8 +62,12 @@ def main():
 
         if result["risk_level"] in {"HIGH", "MEDIUM"}:
             suspicious_count += 1
+        if result["risk_level"] == "UNKNOWN":
+            unknown_count += 1
 
     print("-" * 60)
+    if unknown_count:
+        print(f"{unknown_count} package(s) could not be verified; retry when registry access is available.")
 
     if suspicious_count == 0:
         print("No high- or medium-risk packages detected.")

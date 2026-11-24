@@ -15,8 +15,8 @@ def check_pypi_exists(package_name: str) -> dict:
             repository_url = (
                 info.get("project_url")
                 or info.get("home_page")
-                or info.get("project_urls", {}).get("Source")
-                or info.get("project_urls", {}).get("Repository")
+                or (info.get("project_urls") or {}).get("Source")
+                or (info.get("project_urls") or {}).get("Repository")
             )
 
             upload_dates = []
@@ -46,14 +46,14 @@ def check_pypi_exists(package_name: str) -> dict:
             }
 
         return {
-            "exists": False,
+            "exists": None,
             "package": package_name,
             "error": f"PyPI returned status code {response.status_code}",
         }
 
-    except requests.RequestException as error:
+    except (requests.RequestException, ValueError) as error:
         return {
-            "exists": False,
+            "exists": None,
             "package": package_name,
             "error": str(error),
         }
@@ -81,14 +81,14 @@ def check_npm_exists(package_name: str) -> dict:
             }
 
         return {
-            "exists": False,
+            "exists": None,
             "package": package_name,
             "error": f"npm returned status code {response.status_code}",
         }
 
-    except requests.RequestException as error:
+    except (requests.RequestException, ValueError) as error:
         return {
-            "exists": False,
+            "exists": None,
             "package": package_name,
             "error": str(error),
         }

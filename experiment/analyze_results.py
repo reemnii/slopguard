@@ -26,6 +26,8 @@ def analyze():
         df = pd.DataFrame()
 
     if not df.empty:
+        if df["hallucinated"].isna().any():
+            raise ValueError("Some registry checks were unverified. Rerun those checks before calculating hallucination rates.")
         df["hallucinated"] = (
             df["hallucinated"].astype(str).str.lower().map({"true": True, "false": False})
         ).fillna(False)

@@ -47,8 +47,12 @@ def scan_python_code(code: str) -> list[dict]:
         result["risk_score"] = risk["risk_score"]
         result["risk_level"] = risk["risk_level"]
         result["risk_reasons"] = risk["risk_reasons"]
+        if registry_result.get("error"):
+            result["error"] = registry_result["error"]
 
-        if risk["risk_level"] == "HIGH":
+        if risk["risk_level"] == "UNKNOWN":
+            result["status"] = "UNVERIFIED"
+        elif risk["risk_level"] == "HIGH":
             result["status"] = "HIGH RISK"
         elif risk["risk_level"] == "MEDIUM":
             result["status"] = "SUSPICIOUS"
@@ -96,8 +100,12 @@ def scan_javascript_code(code: str) -> list[dict]:
         result["risk_score"] = risk["risk_score"]
         result["risk_level"] = risk["risk_level"]
         result["risk_reasons"] = risk["risk_reasons"]
+        if registry_result.get("error"):
+            result["error"] = registry_result["error"]
 
-        if risk["risk_level"] == "HIGH":
+        if risk["risk_level"] == "UNKNOWN":
+            result["status"] = "UNVERIFIED"
+        elif risk["risk_level"] == "HIGH":
             result["status"] = "HIGH RISK"
         elif risk["risk_level"] == "MEDIUM":
             result["status"] = "SUSPICIOUS"

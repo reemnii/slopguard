@@ -1,5 +1,6 @@
 import ast
 import re
+import shlex
 
 
 def extract_imports(code: str) -> list[str]:
@@ -7,7 +8,8 @@ def extract_imports(code: str) -> list[str]:
 
     # 1. Extract normal Python imports
     try:
-        tree = ast.parse(code)
+        cleaned = re.sub(r"(?m)^.*\b(?:pip|pip3)\s+install\b.*$|^\s*```.*$", "", code)
+        tree = ast.parse(cleaned)
 
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
@@ -15,7 +17,7 @@ def extract_imports(code: str) -> list[str]:
                     packages.add(alias.name.split(".")[0])
 
             elif isinstance(node, ast.ImportFrom):
-                if node.module:
+                if node.module and node.level == 0:
                     packages.add(node.module.split(".")[0])
 
     except SyntaxError:
@@ -28,17 +30,30 @@ def extract_imports(code: str) -> list[str]:
     matches = re.findall(pip_pattern, code)
 
     for match in matches:
-        parts = match.split()
+        try:
+            parts = shlex.split(match, comments=True)
+        except ValueError:
+            continue
 
+        skip_next = False
         for package in parts:
+            if skip_next:
+                skip_next = False
+                continue
+            if package in {"-r", "--requirement", "-c", "--constraint", "-i", "--index-url", "--extra-index-url", "--trusted-host", "-t", "--target", "--proxy"}:
+                skip_next = True
+                continue
+            if package in {"&&", ";", "||", "|"}:
+                break
             # Ignore command options such as --upgrade
             if package.startswith("-"):
                 continue
 
             # Remove version specifications
             package = re.split(r"[=<>!~]", package)[0]
+            package = package.split("[")[0]
 
-            if package:
+            if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", package):
                 packages.add(package)
 
     return sorted(packages)

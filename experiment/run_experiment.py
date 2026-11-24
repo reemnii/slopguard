@@ -198,7 +198,7 @@ def run_experiment():
                         "risk_level",
                         "UNKNOWN",
                     ),
-                    "hallucinated": not result["exists"],
+                    "hallucinated": result["exists"] is False if result["exists"] is not None else None,
                 }
             )
 

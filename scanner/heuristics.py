@@ -83,6 +83,8 @@ def analyze_package_metadata(registry_result: dict) -> list[str]:
                 first_upload.replace("Z", "+00:00")
             )
 
+            if created.tzinfo is None:
+                created = created.replace(tzinfo=timezone.utc)
             now = datetime.now(timezone.utc)
             age_days = (now - created).days
 
@@ -97,10 +99,13 @@ def analyze_package_metadata(registry_result: dict) -> list[str]:
     return reasons
 
 def calculate_risk_score(
-    exists: bool,
+    exists: bool | None,
     similarity_result: dict | None = None,
     metadata_reasons: list[str] | None = None,
 ) -> dict:
+    if exists is None:
+        return {"risk_score": None, "risk_level": "UNKNOWN", "risk_reasons": ["Registry check failed; package existence could not be verified"]}
+
     score = 0
     reasons = []
 

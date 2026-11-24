@@ -1,4 +1,5 @@
 import re
+import shlex
 
 
 def extract_npm_packages(code: str) -> list[str]:
@@ -8,7 +9,20 @@ def extract_npm_packages(code: str) -> list[str]:
     npm_pattern = r"npm\s+(?:install|i)\s+([^\n\r]+)"
 
     for match in re.findall(npm_pattern, code):
-        for package in match.split():
+        try:
+            tokens = shlex.split(match, comments=True)
+        except ValueError:
+            continue
+        skip_next = False
+        for package in tokens:
+            if skip_next:
+                skip_next = False
+                continue
+            if package in {"--registry", "--prefix", "--workspace", "-w", "--cache"}:
+                skip_next = True
+                continue
+            if package in {"&&", ";", "||", "|"}:
+                break
 
             if package.startswith("-"):
                 continue
@@ -23,21 +37,32 @@ def extract_npm_packages(code: str) -> list[str]:
             else:
                 package = package.split("@")[0]
 
-            packages.add(package)
+            if re.fullmatch(r"(?:@[\w.-]+/)?[\w.-]+", package) and not package.startswith("."):
+                packages.add(package)
 
     # import x from "package"
-    import_pattern = r'import\s+.*?\s+from\s+[\'"]([^\'"]+)[\'"]'
+    import_pattern = r'\b(?:import|export)\s+[^;]*?\s+from\s+[\'"]([^\'"]+)[\'"]'
 
     for package in re.findall(import_pattern, code):
-        packages.add(get_top_level_package(package))
+        if is_package_specifier(package):
+            packages.add(get_top_level_package(package))
 
     # require("package")
-    require_pattern = r'require\([\'"]([^\'"]+)[\'"]\)'
+    require_pattern = r'\b(?:require|import)\s*\(\s*[\'"]([^\'"]+)[\'"]\s*\)'
 
     for package in re.findall(require_pattern, code):
-        packages.add(get_top_level_package(package))
+        if is_package_specifier(package):
+            packages.add(get_top_level_package(package))
+
+    for package in re.findall(r"\bimport\s*['\"]([^'\"]+)['\"]", code):
+        if is_package_specifier(package):
+            packages.add(get_top_level_package(package))
 
     return sorted(packages)
+
+
+def is_package_specifier(package: str) -> bool:
+    return not package.startswith((".", "/", "#")) and (":" not in package or package.startswith("node:"))
 
 
 def get_top_level_package(package: str) -> str:
@@ -50,7 +75,7 @@ def get_top_level_package(package: str) -> str:
 
         return package
 
-    # lodash/get → lodash
+    # lodash/get resolves to lodash
     return package.split("/")[0]
 
 

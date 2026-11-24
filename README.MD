@@ -156,8 +156,10 @@ requirements.txt               Python dependencies
 
 ## Limitations
 
+Run the offline regression suite with `python -m unittest discover -s tests -v`. The live evaluation command above also requires access to PyPI and npm; its small case set is a smoke test, not a general accuracy guarantee.
+
 - Registry checks depend on internet access to PyPI and npm.
-- Registry or network errors may appear as a missing package and produce a false positive.
+- Registry or network errors produce an `UNKNOWN` risk level with `exists` and `risk_score` set to `None`; retry these checks when registry access is available. Evaluation excludes unverified cases from its metrics.
 - Name similarity is limited to a small curated list of popular packages.
 - Package existence alone does not prove that a package is legitimate or safe.
 - SlopGuard is a heuristic tool and should be used as a warning aid, not the only security check.
