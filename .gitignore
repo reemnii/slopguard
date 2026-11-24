@@ -6,3 +6,5 @@ __pycache__/
 
 experiment/results.csv
 experiment/responses.json
+.sites-source-backup/
+slopguard-site.tar.gz

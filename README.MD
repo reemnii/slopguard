@@ -35,6 +35,14 @@ Risk points are added for:
 
 ## Installation
 
+### Deploy the web prototype
+
+The Next.js frontend lives in `web/`. The Python files in the repository root are the command-line scanner, not a Python web server.
+
+For Vercel, deploy from the repository root with the included `vercel.json`. It installs and builds `web/`, then serves its static export from `web/out`. Use **Other** as the framework preset if the dashboard asks; remove any old Python build or output overrides and redeploy.
+
+Alternatively, set the hosting project's **Root Directory** to `web`, select **Next.js**, and use `npm run build` (static output: `out`). Do not deploy the repository root as a Python application. The prototype uses simulated browser-side scans; this does not deploy a live Python scanning API.
+
 Requires Python 3.10 or newer.
 
 ```bash
